@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "994527735879",
+    "project_id": "smartdietplanner-c612a",
+    "storage_bucket": "smartdietplanner-c612a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:994527735879:android:a662d518337613d0a70162",
+        "android_client_info": {
+          "package_name": "project.smartdietplanner.s3619123charitha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXfaS4eRb5tlI-Euf0ANbIP-Ycx4hsrNE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

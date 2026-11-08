@@ -1,203 +1,134 @@
 package project.smartdietplanner.s3619123charitha
 
+
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-import project.smartdietplanner.s3619123charitha.ui.theme.BMICalculatorTheme
+import project.smartdietplanner.s3619123charitha.ui.theme.SmartDietPlanner
 
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BMICalculatorTheme {
-
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    AppNavigationMain()
-                }
+            SmartDietPlanner {
+                LoadingScreenCheck(::isUserLoggedIn)
             }
         }
     }
-}
 
-@Composable
-fun AppNavigationMain() {
+    private fun isUserLoggedIn(value: Int) {
 
-    val navController = rememberNavController()
-    val context = LocalContext.current
+        when (value) {
+            2 -> {
+                gotoSignInActivity(this)
+            }
 
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Splash.route
-    ) {
-
-        composable(Screen.Splash.route) {
-            SplashScreen(
-                onNavigate = {
-                    if (UserDetails.getUserLoginStatus(context)) {
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(Screen.Splash.route) { inclusive = true }
-                        }
-                    } else {
-                        navController.navigate(Screen.Login.route) {
-                            popUpTo(Screen.Splash.route) { inclusive = true }
-                        }
-                    }
-                }
-            )
-        }
-
-        composable(Screen.Login.route) {
-            LoginScreen(
-                onLoginSuccess = {
-
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
-                },
-                onRegisterClick = {
-                    navController.navigate(Screen.Register.route)
-                }
-            )
-        }
-
-        composable(Screen.Register.route) {
-            RegisterScreen(
-                onBackToLogin = {
-                    navController.popBackStack()
-                }
-            )
-        }
-
-        composable(Screen.Home.route) {
-            HomeScreen(navController)
-        }
-
-        composable(Screen.BMICalculator.route) {
-            BMICalculatorScreen(onBack = {
-                navController.popBackStack()
-            })
-        }
-        composable(Screen.BMICategory.route) {
-            BMICategoryScreen(
-                onBack = {
-                    navController.popBackStack()
-                }
-            )
-        }
-        composable(Screen.Profile.route) {
-            ProfileScreen(navController)
-        }
-        composable(Screen.About.route) {
-            AboutScreen(navController)
         }
     }
 }
 
+
 @Composable
-fun SplashScreen(onNavigate: () -> Unit) {
+fun LoadingScreenCheck(isUserLoggedIn: (value: Int) -> Unit) {
+    var splashValue by remember { mutableStateOf(true) }
+    val context = LocalContext.current as Activity
+
 
     LaunchedEffect(Unit) {
         delay(3000)
-        onNavigate()
+        splashValue = false
     }
 
-    SplashScreen()
+    if (splashValue) {
+        LoadingScreen()
+    } else {
 
+        context.startActivity(Intent(context, LoginActivity::class.java))
+        context.finish()
 
+    }
 }
 
 
 @Composable
-fun SplashScreen() {
-
-    Column(
+fun LoadingScreen() {
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                color = Color(0xFF1976D2),
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(color = colorResource(id = R.color.Violet)),
+        contentAlignment = Alignment.Center
     ) {
-
-        Spacer(modifier = Modifier.weight(1f))
-
-
-
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = colorResource(id = R.color.white),
-                ),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
+
+            Text(
+                text = "Smart Diet Planner",
+                fontSize = 42.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = R.color.PureWhite),
+
+                )
+            Spacer(modifier = Modifier.height(8.dp))
+
             Image(
-                modifier = Modifier
-                    .size(70.dp),
-                painter = painterResource(id = R.drawable.bmi_logo),
-                contentDescription = "BMI Calculator"
+                painter = painterResource(id = R.drawable.app_icon),
+                contentDescription = "Smart Diet Planner",
             )
 
-            Text(
-                text = "BMI Calculator App",
-                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold)
-            )
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "By",
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-            )
+                text = "By Charitha",
+                fontSize = 32.sp,
+                fontWeight = FontWeight.Bold,
+                color = colorResource(id = R.color.PureWhite),
 
-            Text(
-                text = "Jeevan Reddy",
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold)
-            )
+                )
 
         }
-
-
-
-
-        Spacer(modifier = Modifier.weight(1f))
-
     }
+
 }
+
 
 @Preview(showBackground = true)
 @Composable
-fun SplashScreenPreview() {
-    SplashScreen()
+fun LoadingScreenPreview() {
+    LoadingScreen()
+}
+
+fun gotoSignInActivity(context: Activity) {
+    context.startActivity(Intent(context, LoginActivity::class.java))
+    context.finish()
 }
