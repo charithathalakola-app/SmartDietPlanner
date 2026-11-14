@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
+import project.smartdietplanner.s3619123charitha.ui.theme.BgShade
 import project.smartdietplanner.s3619123charitha.ui.theme.SmartDietPlanner
 import kotlin.jvm.java
 
@@ -80,8 +81,10 @@ fun SignInScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.LitViolet))
+            .background(color = BgShade)
     ) {
+
+        Spacer(modifier = Modifier.height(32.dp))
 
         Image(
             modifier = Modifier
@@ -96,7 +99,7 @@ fun SignInScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .background(color = colorResource(id = R.color.LitViolet))
+                .background(color = BgShade)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

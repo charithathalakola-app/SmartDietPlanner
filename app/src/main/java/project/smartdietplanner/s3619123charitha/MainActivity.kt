@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,10 +28,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import project.smartdietplanner.s3619123charitha.ui.theme.BgShade
 import project.smartdietplanner.s3619123charitha.ui.theme.SmartDietPlanner
 
 
@@ -84,7 +87,7 @@ fun LoadingScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.Violet)),
+            .background(color = BgShade),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -94,7 +97,8 @@ fun LoadingScreen() {
 
             Text(
                 text = "Smart Diet Planner",
-                fontSize = 42.sp,
+                fontSize = 38.sp,
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 color = colorResource(id = R.color.PureWhite),
 
@@ -102,6 +106,7 @@ fun LoadingScreen() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
+                modifier = Modifier.size(300.dp,300.dp),
                 painter = painterResource(id = R.drawable.app_icon),
                 contentDescription = "Smart Diet Planner",
             )

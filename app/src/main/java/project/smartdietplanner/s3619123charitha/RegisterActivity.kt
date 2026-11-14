@@ -23,6 +23,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -41,7 +45,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
+import project.smartdietplanner.s3619123charitha.ui.theme.BgShade
 import kotlin.jvm.java
+
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +60,15 @@ class RegisterActivity : ComponentActivity() {
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen() {
     var name by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("") }
+    var genderExpanded by remember { mutableStateOf(false) }
 
     var errorMessage by remember { mutableStateOf("") }
 
@@ -69,8 +78,11 @@ fun SignUpScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.LitViolet))
+            .background(color = BgShade)
     ) {
+
+        Spacer(modifier = Modifier.height(32.dp))
+
 
         Image(
             modifier = Modifier
@@ -85,7 +97,7 @@ fun SignUpScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .background(color = colorResource(id = R.color.LitViolet))
+                .background(color = BgShade)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -115,6 +127,54 @@ fun SignUpScreen() {
                 onValueChange = { age = it },
                 label = { Text("Enter Your Age") }
             )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            ExposedDropdownMenuBox(
+                expanded = genderExpanded,
+                onExpandedChange = {
+                    genderExpanded = !genderExpanded
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                TextField(
+                    value = gender,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Select Your Gender") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = genderExpanded
+                        )
+                    },
+                    modifier = Modifier
+                        .menuAnchor()
+                        .fillMaxWidth()
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                listOf(Color.Gray, Color.Gray)
+                            ),
+                            shape = RoundedCornerShape(16.dp)
+                        )
+                )
+
+                ExposedDropdownMenu(
+                    expanded = genderExpanded,
+                    onDismissRequest = {
+                        genderExpanded = false
+                    }
+                ) {
+                    listOf("Male", "Female", "Other").forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option) },
+                            onClick = {
+                                gender = option
+                                genderExpanded = false
+                            }
+                        )
+                    }
+                }
+            }
 
             Spacer(modifier = Modifier.height(6.dp))
 
@@ -166,6 +226,10 @@ fun SignUpScreen() {
 
                         age.isBlank() -> {
                             errorMessage = "Please enter your Age."
+                        }
+
+                        gender.isBlank() -> {
+                            errorMessage = "Please select your gender."
                         }
 
                         email.isBlank() -> {
