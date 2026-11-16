@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -244,7 +245,14 @@ fun SignUpScreen() {
                         else -> {
                             errorMessage = ""
 
-                            //call firebase function
+                            val userData = UserData(
+                                name,
+                                age,
+                                gender,
+                                email,
+                                password,
+                            )
+                            registerUser(userData, context)
                         }
                     }
                 },
@@ -291,5 +299,45 @@ fun SignUpScreen() {
     }
 }
 
+fun registerUser(userData: UserData, context: Context,onRegistered: () -> Unit={}) {
 
+    val firebaseDatabase = FirebaseDatabase.getInstance()
+    val databaseReference = firebaseDatabase.getReference("UsersData")
+
+    databaseReference.child(userData.email.replace(".", ","))
+        .setValue(userData)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "You Registered Successfully", Toast.LENGTH_SHORT)
+                    .show()
+
+                onRegistered.invoke()
+
+            } else {
+                Toast.makeText(
+                    context,
+                    "Registration Failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        .addOnFailureListener { _ ->
+            Toast.makeText(
+                context,
+                "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+}
+
+
+
+
+data class UserData(
+    var name : String = "",
+    var age : String = "",
+    var gender : String = "",
+    var email : String = "",
+    var password: String = ""
+)
 
