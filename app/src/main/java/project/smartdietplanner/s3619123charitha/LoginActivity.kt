@@ -42,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
+import project.smartdietplanner.s3619123charitha.UserAccountData.saveLoginStatus
 import project.smartdietplanner.s3619123charitha.ui.theme.BgShade
 import project.smartdietplanner.s3619123charitha.ui.theme.SmartDietPlanner
 import kotlin.jvm.java
@@ -228,10 +229,13 @@ fun loginUser(userData: UserData, context: Context, onLoginSuccess: () -> Unit={
             if (dbData != null) {
                 if (dbData.password == userData.password) {
 
-//                    AppUserData.saveLoginStatus(context, true)
-//                    AppUserData.saveUserName(context, dbData.name)
-//                    AppUserData.saveUserEmail(context, dbData.emailid)
+                    UserAccountData.saveLoginStatus(context,true)
+                    UserAccountData.saveUserName(context,dbData.name)
+                    UserAccountData.saveUserEmail(context,dbData.email)
+
                     Toast.makeText(context, "Login Successful", Toast.LENGTH_SHORT).show()
+
+                    context.startActivity(Intent(context, HomeActivity::class.java))
 
                     onLoginSuccess.invoke()
 

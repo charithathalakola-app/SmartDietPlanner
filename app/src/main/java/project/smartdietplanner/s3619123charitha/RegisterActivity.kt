@@ -311,7 +311,9 @@ fun registerUser(userData: UserData, context: Context,onRegistered: () -> Unit={
                 Toast.makeText(context, "You Registered Successfully", Toast.LENGTH_SHORT)
                     .show()
 
-                onRegistered.invoke()
+                context.startActivity(Intent(context, LoginActivity::class.java))
+                (context as Activity).finish()
+
 
             } else {
                 Toast.makeText(
